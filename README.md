@@ -1,5 +1,4 @@
-# Ampla Engineering Take-home Exercise
-
+# Ledger
 ## Loan Ledger
 
 As part of your new role at Working Capital you are asked to continue the work that another engineer has started for
