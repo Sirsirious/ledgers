@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ampla-ledger-takehome-public"
+version = "0.1.0"
+description = ""
+authors = ["Tiago Duque <tfduque@hotmail.com>"]
+readme = "README.md"
+packages = [{include = "ampla_ledger_takehome_public"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "8.0.3"
+python-dateutil = "^2.8.2"
+black = {extras = ["d"], version = "^23.7.0"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -98,7 +98,9 @@ class CLITest(unittest.TestCase):
         with self.runner.isolated_filesystem(temp_dir="/tmp"):
             result = self.runner.invoke(interface, ["create-db"])
             self.assertEqual(0, result.exit_code)
-            self.assertEqual(True, os.path.exists(os.path.join(os.getcwd(), "db.sqlite3")))
+            self.assertEqual(
+                True, os.path.exists(os.path.join(os.getcwd(), "db.sqlite3"))
+            )
 
     def test_drop_db(self):
         """Test deletion of DB."""
@@ -106,7 +108,9 @@ class CLITest(unittest.TestCase):
             self.runner.invoke(interface, ["create-db"])
             result = self.runner.invoke(interface, ["drop-db"])
             self.assertEqual(0, result.exit_code)
-            self.assertEqual(False, os.path.exists(os.path.join(os.getcwd(), "db.sqlite3")))
+            self.assertEqual(
+                False, os.path.exists(os.path.join(os.getcwd(), "db.sqlite3"))
+            )
 
     def test_load(self):
         """
@@ -138,7 +142,10 @@ class CLITest(unittest.TestCase):
             msg = f"Testing :: {test_filename} results of {output_date}"
             print(msg)
             with self.runner.isolated_filesystem(temp_dir="/tmp"), self.subTest(
-                msg=msg, test_filename=test_filename, output_date=output_date, output=output
+                msg=msg,
+                test_filename=test_filename,
+                output_date=output_date,
+                output=output,
             ):
                 test_file_location = os.path.join(self.test_dir, test_filename)
                 self.runner.invoke(interface, ["create-db"])
