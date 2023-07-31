@@ -27,7 +27,7 @@ from typing import Optional
 
 from dateutil import parser
 
-from ledger_calculator.unused_files.wrong_dataclasses import (
+from tools.unused_files.wrong_dataclasses import (
     EventType,
     Event,
     EventWithDuration,

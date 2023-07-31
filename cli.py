@@ -9,8 +9,9 @@ from typing import Dict
 
 from dateutil import parser
 
-from ledger_calculator.interest import (
-    get_advances,
+from tools.ledger import (
+    compute_ledger,
+    format_remaining_balances,
 )
 
 
@@ -126,7 +127,7 @@ def balances(ctx: Dict, end_date: str = None) -> None:
         click.echo("No events found")
         return
 
-    advances = get_advances(events, last_date=parser.parse(end_date).date())
+    advances = compute_ledger(events, last_date=parser.parse(end_date).date())
 
     click.echo("Advances:")
     click.echo("----------------------------------------------------------")
@@ -136,10 +137,11 @@ def balances(ctx: Dict, end_date: str = None) -> None:
             "Identifier", "Date", "Initial Amt", "Current Balance"
         )
     )
-    for ix, _ in enumerate(advances.balances):
+    balances = format_remaining_balances(advances.advances, advances.total_balance)
+    for ix, _ in enumerate(balances):
         advance_date = advances.advance_dates[ix].isoformat()
         initial_amt = advances.advances[ix]
-        current_balance = advances.balances[ix]
+        current_balance = balances[ix]
         click.echo(
             "{0:>10}{1:>11}{2:>17.2f}{3:>20.2f}".format(
                 ix + 1,  # The advance identifier is 1-based
@@ -148,10 +150,14 @@ def balances(ctx: Dict, end_date: str = None) -> None:
                 current_balance,
             )
         )
-    overall_advance_balance = sum(advances.balances)
+    overall_advance_balance = (
+        advances.total_balance if advances.total_balance >= Decimal(0) else 0
+    )
     overall_interest_payable_balance = advances.total_accrued_interest
     overall_interest_paid = advances.total_interest_paid
-    overall_payments_for_future = advances.positive_balance
+    overall_payments_for_future = (
+        abs(advances.total_balance) if advances.total_balance <= Decimal(0) else 0
+    )
 
     # TODO: FIXME Print each advance row and relevant advance statistics
 
